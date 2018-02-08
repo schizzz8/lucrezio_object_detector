@@ -1,6 +1,6 @@
 # lucrezio_object_detector
 
-###Description
+### Description
 
 This ros package contains a node that simulates an object detector in a Gazebo simulation. 
 
@@ -15,11 +15,11 @@ It publishes to the following topics:
 * /image_bounding_boxes: message containing the actual detected objects
 * /camera/rgb/label_image: RGB image containing pixelwise annotations
 
-###Usage
+### Usage
 
     rosrun lucrezio_object_detector object_detector_node
 
-###TODO
+### TODO
 
 * **Refactoring:** Remove `Detection` class to make smarter computations.
 * **Debug:** Serialize data to run node offline. 
