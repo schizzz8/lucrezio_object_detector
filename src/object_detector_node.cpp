@@ -5,7 +5,7 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/Image.h>
-#include <lucrezio_logical_camera/LogicalImage.h>
+#include <lucrezio_simulation_environments/LogicalImage.h>
 
 #include "tf/tf.h"
 #include "tf/transform_listener.h"
@@ -22,11 +22,11 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
-#include <lucrezio_object_detector/ImageBoundingBoxesArray.h>
+#include <lucrezio_semantic_perception/ImageBoundingBoxesArray.h>
 
 
 typedef pcl::PointCloud<pcl::PointXYZ> PointCloudType;
-typedef std::vector<lucrezio_logical_camera::Model> Models;
+typedef std::vector<lucrezio_simulation_environments::Model> Models;
 typedef std::pair<Eigen::Vector3f,Eigen::Vector3f> BoundingBox3D;
 typedef std::vector<BoundingBox3D> BoundingBoxes3D;
 
@@ -73,7 +73,7 @@ public:
 
         _synchronizer.registerCallback(boost::bind(&ObjectDetector::filterCallback, this, _1, _2, _3));
 
-        _image_bounding_boxes_pub = _nh.advertise<lucrezio_object_detector::ImageBoundingBoxesArray>("/image_bounding_boxes", 1);
+        _image_bounding_boxes_pub = _nh.advertise<lucrezio_semantic_perception::ImageBoundingBoxesArray>("/image_bounding_boxes", 1);
         _label_image_pub = _it.advertise("/camera/rgb/label_image", 1);
 
         ROS_INFO("Starting detection simulator node!");
@@ -100,7 +100,7 @@ public:
         _camera_info_sub.shutdown();
     }
 
-    void filterCallback(const lucrezio_logical_camera::LogicalImage::ConstPtr& logical_image_msg,
+    void filterCallback(const lucrezio_simulation_environments::LogicalImage::ConstPtr& logical_image_msg,
                         const PointCloudType::ConstPtr& depth_cloud_msg,
                         const sensor_msgs::Image::ConstPtr& rgb_image_msg){
 
@@ -170,10 +170,10 @@ protected:
     Eigen::Isometry3f _depth_camera_transform,_inverse_depth_camera_transform;
     PointCloudType::ConstPtr _depth_cloud;
 
-    message_filters::Subscriber<lucrezio_logical_camera::LogicalImage> _logical_image_sub;
+    message_filters::Subscriber<lucrezio_simulation_environments::LogicalImage> _logical_image_sub;
     message_filters::Subscriber<PointCloudType> _depth_cloud_sub;
     message_filters::Subscriber<sensor_msgs::Image> _rgb_image_sub;
-    typedef message_filters::sync_policies::ApproximateTime<lucrezio_logical_camera::LogicalImage,
+    typedef message_filters::sync_policies::ApproximateTime<lucrezio_simulation_environments::LogicalImage,
     PointCloudType,
     sensor_msgs::Image> FilterSyncPolicy;
     message_filters::Synchronizer<FilterSyncPolicy> _synchronizer;
@@ -215,7 +215,7 @@ private:
                                    const Eigen::Isometry3f &transform,
                                    const Models &models){
         for(int i=0; i<models.size(); ++i){
-            const lucrezio_logical_camera::Model &model = models[i];
+            const lucrezio_simulation_environments::Model &model = models[i];
 
             tf::Transform model_pose;
             tf::poseMsgToTF(model.pose,model_pose);
@@ -287,7 +287,7 @@ private:
         }
     }
 
-    void detectObjects(const lucrezio_logical_camera::LogicalImage::ConstPtr& logical_image_msg){
+    void detectObjects(const lucrezio_simulation_environments::LogicalImage::ConstPtr& logical_image_msg){
 
         int num_models = logical_image_msg->models.size();
         std::cerr << "num_models: " << num_models << std::endl;
@@ -312,10 +312,10 @@ private:
 
     void publishImageBoundingBoxes(){
         //        std::cerr << "Publishing detections" << std::endl;
-        lucrezio_object_detector::ImageBoundingBoxesArray image_bounding_boxes;
+        lucrezio_semantic_perception::ImageBoundingBoxesArray image_bounding_boxes;
         image_bounding_boxes.header.frame_id = "camera_depth_optical_frame";
         image_bounding_boxes.header.stamp = _last_timestamp;
-        lucrezio_object_detector::ImageBoundingBox image_bounding_box;
+        lucrezio_semantic_perception::ImageBoundingBox image_bounding_box;
         for(int i=0; i < _detections.size(); ++i){
             //            std::cerr << "#" << i+1 << std::endl;
             image_bounding_box.type = _detections[i].type();
@@ -323,7 +323,7 @@ private:
             image_bounding_box.top_left.c = _detections[i].topLeft().y();
             image_bounding_box.bottom_right.r = _detections[i].bottomRight().x();
             image_bounding_box.bottom_right.c = _detections[i].bottomRight().y();
-            lucrezio_object_detector::Pixel pixel;
+            lucrezio_semantic_perception::Pixel pixel;
             for(int j=0; j < _detections[i]._pixels.size(); ++j){
                 pixel.r = _detections[i]._pixels[j].x();
                 pixel.c = _detections[i]._pixels[j].y();

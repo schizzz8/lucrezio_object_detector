@@ -1,4 +1,4 @@
-# lucrezio_object_detector
+# lucrezio_semantic_perception
 
 ### Description
 
@@ -7,7 +7,7 @@ This ros package contains a node that simulates an object detector in a Gazebo s
 It subscribes to the following topics:
 
 * /gazebo/logical_camera_image: message produced by a Gazebo plugin that contains the set of objects currently seen by the robot
-* /camera/rb/image_raw: RGB image acquired with Xtion sensor
+* /camera/rgb/image_raw: RGB image acquired with Xtion sensor
 * /camera/depth/points: Depth point cloud acquired with Xtion sensor
 
 It publishes to the following topics:
@@ -17,7 +17,7 @@ It publishes to the following topics:
 
 ### Usage
 
-    rosrun lucrezio_object_detector object_detector_node
+    rosrun lucrezio_semantic_perception object_detector_node
 
 ### TODO
 

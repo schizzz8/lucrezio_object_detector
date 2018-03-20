@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(lucrezio_object_detector)
+project(lucrezio_semantic_perception)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
  add_compile_options(-std=c++11)
@@ -16,7 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   geometry_msgs
   image_transport
-  lucrezio_logical_camera
+  lucrezio_simulation_environments
   pcl_conversions
   pcl_ros
   roscpp
@@ -124,8 +124,8 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS src
-#  LIBRARIES lucrezio_object_detector
-  CATKIN_DEPENDS cv_bridge geometry_msgs image_transport lucrezio_logical_camera pcl_conversions pcl_ros roscpp rospy sensor_msgs std_msgs message_runtime
+#  LIBRARIES lucrezio_semantic_perception
+  CATKIN_DEPENDS cv_bridge geometry_msgs image_transport lucrezio_simulation_environments pcl_conversions pcl_ros roscpp rospy sensor_msgs std_msgs message_runtime
 #  DEPENDS system_lib
 )
 
@@ -142,7 +142,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/lucrezio_object_detector.cpp
+#   src/${PROJECT_NAME}/lucrezio_semantic_perception.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -153,7 +153,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/lucrezio_object_detector_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/lucrezio_semantic_perception_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -212,7 +212,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/src)
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_lucrezio_object_detector.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_lucrezio_semantic_perception.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

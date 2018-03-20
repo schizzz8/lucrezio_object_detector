@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>lucrezio_object_detector</name>
+  <name>lucrezio_semantic_perception</name>
   <version>0.0.0</version>
-  <description>The lucrezio_object_detector package</description>
+  <description>The lucrezio_semantic_perception package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/lucrezio_object_detector</url> -->
+  <!-- <url type="website">http://wiki.ros.org/lucrezio_semantic_perception</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
@@ -44,7 +44,7 @@
   <build_depend>cv_bridge</build_depend>
   <build_depend>geometry_msgs</build_depend>
   <build_depend>image_transport</build_depend>
-  <build_depend>lucrezio_logical_camera</build_depend>
+  <build_depend>lucrezio_simulation_environments</build_depend>
   <build_depend>pcl_conversions</build_depend>
   <build_depend>pcl_ros</build_depend>
   <build_depend>roscpp</build_depend>
@@ -56,7 +56,7 @@
   <run_depend>cv_bridge</run_depend>
   <run_depend>geometry_msgs</run_depend>
   <run_depend>image_transport</run_depend>
-  <run_depend>lucrezio_logical_camera</run_depend>
+  <run_depend>lucrezio_simulation_environments</run_depend>
   <run_depend>pcl_conversions</run_depend>
   <run_depend>pcl_ros</run_depend>
   <run_depend>roscpp</run_depend>
