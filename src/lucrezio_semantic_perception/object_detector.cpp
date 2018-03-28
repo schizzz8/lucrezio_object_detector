@@ -19,15 +19,16 @@ namespace lucrezio_semantic_perception{
     directions_image.create(_rows,_cols);
     initializePinholeDirections(directions_image,_K);
     _points_image.create(_rows,_cols);
-    convert_16UC1_to_32FC1(depth_image, _raw_depth_image);
+//    convert_16UC1_to_32FC1(depth_image, _raw_depth_image);
+
     computePointsImage(_points_image,
                        directions_image,
-                       depth_image,
+                       _raw_depth_image,
                        0.02f,
                        8.0f);
 
     _label_image.create(_rows,_cols);
-    _label_image=cv::Vec3b(0,0,0);
+
   }
 
   void ObjectDetector::readData(char *filename){
@@ -113,10 +114,12 @@ namespace lucrezio_semantic_perception{
 
   void ObjectDetector::computeWorldBoundingBoxes(){
     Eigen::Isometry3f transform = _rgbd_camera_transform.inverse()*_logical_camera_transform;
+
     int num_models=_models.size();
     _bounding_boxes.resize(num_models);
     _detections.resize(num_models);
 
+    std::cerr << "Computing world bounding boxes for " << num_models << " models" << std::endl;
     for(int i=0; i<num_models; ++i){
       const Model &model = _models[i];
       const Eigen::Isometry3f& model_pose=model.pose();
@@ -188,6 +191,11 @@ namespace lucrezio_semantic_perception{
     computeWorldBoundingBoxes();
     printf("Computing WBB took: %f\n",((double)cv::getTickCount() - cv_wbb_time)/cv::getTickFrequency());
 
+    for(size_t i=0; i<_bounding_boxes.size(); ++i){
+      std::cerr << _bounding_boxes[i].first.transpose() << " - " << _bounding_boxes[i].first.transpose() << std::endl;
+    }
+    std::cerr << std::endl;
+
     //Compute image bounding boxes
     double cv_ibb_time = (double)cv::getTickCount();
     computeImageBoundingBoxes();
@@ -223,6 +231,7 @@ namespace lucrezio_semantic_perception{
   }
 
   void ObjectDetector::computeLabelImage(){
+    _label_image=cv::Vec3b(0,0,0);
     for(int i=0; i < _detections.size(); ++i){
       std::string type = _detections[i].type();
       std::string cropped_type = type.substr(0,type.find_first_of("_"));
@@ -234,5 +243,8 @@ namespace lucrezio_semantic_perception{
         _label_image.at<cv::Vec3b>(c,r) = color;
       }
     }
+
+//    cv::imshow("label_image",_label_image);
+//    cv::waitKey(10);
   }
 }

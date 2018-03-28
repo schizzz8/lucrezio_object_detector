@@ -160,8 +160,8 @@ public:
 
       compute();
 
-      //      //publish image bounding boxes
-      //      publishImageBoundingBoxes();
+      //publish image bounding boxes
+      publishImageBoundingBoxes();
 
       sensor_msgs::ImagePtr label_image_msg = cv_bridge::CvImage(std_msgs::Header(),
                                                                  "bgr8",
@@ -221,7 +221,6 @@ private:
     return tft;
   }
 
-
   std::string type2str(int type) {
     std::string r;
     uchar depth = type & CV_MAT_DEPTH_MASK;
@@ -271,13 +270,13 @@ int main(int argc, char** argv){
   ros::NodeHandle nh;
   ObjectDetectorNode simulator(nh);
 
-  //ros::spin();
+  ros::spin();
 
-  ros::Rate loop_rate(1);
-  while(ros::ok()){
-    ros::spinOnce();
-    loop_rate.sleep();
-  }
+//  ros::Rate loop_rate(1);
+//  while(ros::ok()){
+//    ros::spinOnce();
+//    loop_rate.sleep();
+//  }
 
 
   return 0;
