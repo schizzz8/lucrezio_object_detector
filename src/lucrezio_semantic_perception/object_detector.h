@@ -24,14 +24,25 @@ namespace lucrezio_semantic_perception{
     void setImages(const RGBImage &rgb_image_,
                    const RawDepthImage &raw_depth_image_);
 
+    inline void setCameraTransforms(const Eigen::Isometry3f &rgbd_camera_transform_,
+                        const Eigen::Isometry3f &logical_camera_transform_){
+      _rgbd_camera_transform = rgbd_camera_transform_;
+      _logical_camera_transform = logical_camera_transform_;
+    }
+
+    inline void setModels(const ModelVector &models_){_models = models_;}
+
     void readData(char* filename);
 
     void compute();
 
+    inline const Eigen::Matrix3f &K() const {return _K;}
     inline const Eigen::Isometry3f &rgbdCameraTransform() const {return _rgbd_camera_transform;}
     inline const Eigen::Isometry3f &logicalCameraTransform() const {return _logical_camera_transform;}
-    inline const RGBImage &labelImage() const {return _label_image;}
+    inline const ModelVector &models() const {return _models;}
     inline const BoundingBox3DVector &boundingBoxes() const {return _bounding_boxes;}
+    inline const DetectionVector &detections() const {return _detections;}
+    inline const RGBImage &labelImage() const {return _label_image;}
 
   protected:
     RGBImage _rgb_image;

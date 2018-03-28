@@ -1,7 +1,7 @@
 #include "image_utils.h"
 
 void convert_16UC1_to_32FC1(cv::Mat &dest, const cv::Mat &src, float scale){
-  assert(src.type() != CV_16UC1 && "convert_16UC1_to_32FC1: source image of different type from 16UC1");
+  assert(src.type() == CV_16UC1 && "convert_16UC1_to_32FC1: source image of different type from 16UC1");
   const unsigned short* sptr = (const unsigned short*)src.data;
   int size = src.rows * src.cols;
   const unsigned short* send = sptr + size;
